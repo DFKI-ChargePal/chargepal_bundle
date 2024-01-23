@@ -25,3 +25,4 @@ if __name__ == '__main__':
     config_file_path = rospack.get_path("chargepal_bundle")+"/cfg/config.yaml"
     config_params = load_yaml_params(config_file_path)
     set_ros_params(config_params)
+    rospy.spin()
