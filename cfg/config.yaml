@@ -1,5 +1,5 @@
-server_address: "localhost:50559"
+server_address: "localhost:50059"
 robot_name: 'ChargePal1'
 robot_id: 'ER-FLEX-00040'
 sim_flag: True
-server_address: localhost:50059
+recovery_enabled: False
