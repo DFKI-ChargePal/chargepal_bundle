@@ -1,5 +1,7 @@
 server_address: "localhost:50059"
+mir_address: "192.168.12.20"
 robot_name: 'ChargePal1'
 robot_id: 'ER-FLEX-00040'
 sim_flag: True
 recovery_enabled: False
+server_timeout: 600 #seconds

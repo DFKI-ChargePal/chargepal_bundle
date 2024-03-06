@@ -2,7 +2,6 @@
     <arg name="node_start_delay" default="5.0" />  
     <node pkg="chargepal_bundle" type="chargepal_load_params.py" name="chargepal_load_params" output="screen"/>
     <node pkg="chargepal_client" type="client.py" name="chargepal_client" launch-prefix="bash -c 'sleep $(arg node_start_delay); $0 $@' " output="screen"/>
-    <node pkg="chargepal_bundle" type="chargepal_startup.py" name="chargepal_startup" launch-prefix="bash -c 'sleep $(arg node_start_delay); $0 $@' " output="screen" />
-	<node pkg="chargepal_services" type="chargepal_service.py" name="chargepal_services" launch-prefix="bash -c 'sleep $(arg node_start_delay); $0 $@' " output="screen" />
+    <node pkg="chargepal_services" type="chargepal_service.py" name="chargepal_services" launch-prefix="bash -c 'sleep $(arg node_start_delay); $0 $@' " output="screen" />
 	<node pkg="chargepal_actions" type="cp_action_server.py" name="chargepal_action_server" launch-prefix="bash -c 'sleep $(arg node_start_delay); $0 $@' "  output="screen"/>
 </launch>
