@@ -32,5 +32,6 @@
 |     server_timeout   | 600       | Value in seconds which denote the time interval after which a technician is to be called when connection to server has failed|
 
 
-**Step 3:** `catkin_make` and `source devel/setup.bash` the workspace
-**Step 2:** Run `roslaunch chargepal_bundle startup.launch`. Wait for a few seconds for it to finish starting all the launch files. Then run `rosrun chargepal_behaviour_tree behaviour_tree_cpp`.
+**Step 2:** `catkin_make` and `source devel/setup.bash` the workspace.
+
+**Step 3:** Run `roslaunch chargepal_bundle startup.launch`. Wait for a few seconds for it to finish starting all the launch files. Then run `rosrun chargepal_behaviour_tree behaviour_tree_cpp`.
