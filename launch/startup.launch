@@ -4,4 +4,5 @@
     <node pkg="chargepal_client" type="client.py" name="chargepal_client" launch-prefix="bash -c 'sleep $(arg node_start_delay); $0 $@' " output="screen"/>
     <node pkg="chargepal_services" type="chargepal_service.py" name="chargepal_services" launch-prefix="bash -c 'sleep $(arg node_start_delay); $0 $@' " output="screen" />
 	<node pkg="chargepal_actions" type="cp_action_server.py" name="chargepal_action_server" launch-prefix="bash -c 'sleep $(arg node_start_delay); $0 $@' "  output="screen"/>
+    <node pkg="chargepal_monitor_gui" type="gui_core.py" name="gui_core" launch-prefix="bash -c 'sleep $(arg node_start_delay); $0 $@' "  output="screen"/>
 </launch>
