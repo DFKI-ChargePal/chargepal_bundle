@@ -28,8 +28,15 @@ def set_ros_params(params):
 
 def set_gui_params(updated_values):
 
+    with open(gui_yaml_path, "r") as file:
+        data = yaml.safe_load(file)
+
+    # Update the specific values
+    for key, value in updated_values.items():
+        data[key] = value
+
     with open(gui_yaml_path, "w") as file:
-        yaml.dump(updated_values, file)
+        yaml.dump(data, file)
 
 
 if __name__ == "__main__":
