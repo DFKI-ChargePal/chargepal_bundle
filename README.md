@@ -32,7 +32,7 @@
 - [ ] Check if the `.py` and `.pyi` files are created inside `/chargepal_client/src/chargepal_client`. If not, inside `/chargepal_client/src/chargepal_client` run `python -m grpc_tools.protoc -I. --python_out=. --pyi_out=. --grpc_python_out=. communication.proto ` to create them.
 
 ## Execution
-1. **Enviroinment setup**
+1. **Environment setup**
 - Generate a map inside the mir platform .
 - Create charger as a markers on the created map.
 - Create positions (E.g. ADS_1, ADS_1_pick , BWS_1, BWS_1_pick) on the created map.
@@ -48,13 +48,12 @@
 - Make sure `config.yaml` (chargepal_bundle) is set with the required values. 
 - `./create_ldb.py` whenever the enviroinment is reset to the base position ( robot and carts in their respective bases).
 
-- Sever node: 
+- Sever node (tmux): 
     - `./server.py` to run the server 
-- Robot nodes
+- Robot nodes (tmux):
     - `roslaunch chargepal_bundle startup.launch` 
     - `roslaunch chargepal_map action_server.launch` 
     - `rosrun chargepal_behaviour_tree chargepal_behaviour_tree`
-    - `roslaunch chargepal_map action_server.launch`
 
 4. **GUI**
 - Open `localhost:8080` on a browser to view the gui. 
