@@ -12,6 +12,7 @@
 |    [chargepal_behaviour_tree](https://git.ni.dfki.de/chargepal/system-integration/robot-packages/chargepal_behaviour_tree)    |    hannover_gui    |
 |    [chargepal_bundle](https://git.ni.dfki.de/chargepal/system-integration/robot-packages/chargepal_bundle)    |    hannover_gui    |
 |    [chargepal_services](https://git.ni.dfki.de/chargepal/system-integration/robot-packages/chargepal_services)    |    main    |
+| [chargepal_map](https://git.ni.dfki.de/chargepal/manipulation/chargepal_map/-/tree/feat/start_state?ref_type=heads) | feat/start_state|
 
 - Ensure the `chargepal_local_server` is placed outside the `chargepal_ws`
 
@@ -24,8 +25,10 @@
  
 ## Checklist before starting the nodes
 - [ ] Make sure the local database is created. Set up the envionment representation in the local database (server). 
-- [ ] Make sure missions are added inside MiR platform. <details><summary>Click to see how missions are added</summary></details>
-- [ ] Configure the `cfg/config.yaml` file with necessary values.
+- [ ] Make sure missions are added inside MiR platform.
+- [ ] Make sure `gui.yaml` (chargepal_monitor_gui) is set with the required values. 
+- [ ] Make sure `config.yaml` (chargepal_bundle) is set with the required values. 
+- [ ] `./create_ldb.py` whenever the enviroinment is reset to the base position ( robot and carts in their respective bases).
 - [ ] Check if the `.py` and `.pyi` files are created inside `/chargepal_client/src/chargepal_client`. If not, inside `/chargepal_client/src/chargepal_client` run `python -m grpc_tools.protoc -I. --python_out=. --pyi_out=. --grpc_python_out=. communication.proto ` to create them.
 
 ## Execution
@@ -36,8 +39,10 @@
 - Make sure every mission inside mission group "Chargepal" is associated with the markers and position marked in the set map. Remember to click Save! 
 - Manually execute every mission, to check if the positions are reachable. 
 
+2. Setup the manipulation
+- View [ChargePal Manipulation Setup](https://git.ni.dfki.de/-/snippets/9) for further detials to setup the manipulation
 
-2. **On our Orin** 
+3. **On our Orin** 
 - ssh `chargepal@192.168.12.50` (only for Orin)
 - Make sure `gui.yaml` (chargepal_monitor_gui) is set with the required values. 
 - Make sure `config.yaml` (chargepal_bundle) is set with the required values. 
@@ -48,9 +53,10 @@
 - Robot nodes
     - `roslaunch chargepal_bundle startup.launch` 
     - `roslaunch chargepal_map action_server.launch` 
-    - `rosrun chargepal_behaviour_tree chargepal_behaviour_tree` 
+    - `rosrun chargepal_behaviour_tree chargepal_behaviour_tree`
+    - `roslaunch chargepal_map action_server.launch`
 
-3. **GUI**
+4. **GUI**
 - Open `localhost:8080` on a browser to view the gui. 
 - Under Demo Control -> set a demo loop value and press START.
 - **NOTES**: 
