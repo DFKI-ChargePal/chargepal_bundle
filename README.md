@@ -39,7 +39,7 @@
 - Make sure every mission inside mission group "Chargepal" is associated with the markers and position marked in the set map. Remember to click Save! 
 - Manually execute every mission, to check if the positions are reachable. 
 
-2. Setup the manipulation
+2. **Setup the manipulation**
 - View [ChargePal Manipulation Setup](https://git.ni.dfki.de/-/snippets/9) for further detials to setup the manipulation
 
 3. **On our Orin** 
