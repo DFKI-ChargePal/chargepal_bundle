@@ -23,6 +23,12 @@ def load_yaml_params(file_path):
 def set_ros_params(params):
     if params:
         for key, value in params.items():
+            if "_path" in key:
+                seperator = value.find('/')
+                if seperator != -1:
+                    pkg_name = value[:seperator]
+                    pkg_path = value[seperator:]
+                    value = rospack.get_path(pkg_name) + pkg_path
             rospy.set_param(key, value)
 
 

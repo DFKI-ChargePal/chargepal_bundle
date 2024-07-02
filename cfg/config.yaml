@@ -1,7 +1,10 @@
 server_address: "localhost:50059"
 mir_address: "192.168.12.20"
-robot_name: 'ChargePal1'
+robot_name: "ChargePal1"
 robot_id: 'ER-FLEX-00040'
 sim_flag: True
 recovery_enabled: False
-server_timeout: 600 #seconds
+server_timeout: 600 #seconds (10 minutes)
+rdb_path: "chargepal_bundle/db/rdb.db"
+rdbc_path: "chargepal_bundle/db/rdb_copy.db"
+log_file_path: "chargepal_bundle/logs/chargepal_logs.txt"
