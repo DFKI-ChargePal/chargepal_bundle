@@ -23,13 +23,26 @@ def load_yaml_params(file_path):
 def set_ros_params(params):
     if params:
         for key, value in params.items():
+            if "_path" in key:
+                seperator = value.find('/')
+                if seperator != -1:
+                    pkg_name = value[:seperator]
+                    pkg_path = value[seperator:]
+                    value = rospack.get_path(pkg_name) + pkg_path
             rospy.set_param(key, value)
 
 
 def set_gui_params(updated_values):
 
+    with open(gui_yaml_path, "r") as file:
+        data = yaml.safe_load(file)
+
+    # Update the specific values
+    for key, value in updated_values.items():
+        data[key] = value
+
     with open(gui_yaml_path, "w") as file:
-        yaml.dump(updated_values, file)
+        yaml.dump(data, file)
 
 
 if __name__ == "__main__":

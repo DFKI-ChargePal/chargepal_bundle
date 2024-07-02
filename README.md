@@ -4,6 +4,18 @@
 ## Dependencies
 - nlohmann-json3-dev : `sudo apt-get -y install nlohmann-json3-dev`
 
+| package | branch |
+| ------ | ------ |
+|   [chargepal_local_server](https://git.ni.dfki.de/chargepal/system-integration/server-packages/chargepal_local_server/-/tree/hannover_gui?ref_type=heads)      |   hannover_gui     |
+|  [chargepal_monitor_gui](https://git.ni.dfki.de/chargepal/system-integration/server-packages/chargepal_monitor_gui/-/tree/hannover_gui?ref_type=heads)      |   hannover_gui     |
+|     [chargepal_actions](https://git.ni.dfki.de/chargepal/system-integration/robot-packages/chargepal_actions)    |   hannover_gui     |
+|    [chargepal_behaviour_tree](https://git.ni.dfki.de/chargepal/system-integration/robot-packages/chargepal_behaviour_tree)    |    hannover_gui    |
+|    [chargepal_bundle](https://git.ni.dfki.de/chargepal/system-integration/robot-packages/chargepal_bundle)    |    hannover_gui    |
+|    [chargepal_services](https://git.ni.dfki.de/chargepal/system-integration/robot-packages/chargepal_services)    |    main    |
+| [chargepal_map](https://git.ni.dfki.de/chargepal/manipulation/chargepal_map/-/tree/feat/start_state?ref_type=heads) | feat/start_state|
+
+- Ensure the `chargepal_local_server` is placed outside the `chargepal_ws`
+
 ## Installation
 - Create a `catkin_ws` folder and a `src` folder inside it.
 - Clone the following packages `chargepal_bundle`,`chargepal_behaviour_tree`,`chargepal_client`,`chargepal_actions`,`chargepal_services`inside a `catkin_ws/src`.
@@ -13,8 +25,10 @@
  
 ## Checklist before starting the nodes
 - [ ] Make sure the local database is created. Set up the envionment representation in the local database (server). 
-- [ ] Make sure missions are added inside MiR platform. <details><summary>Click to see how missions are added</summary></details>
-- [ ] Configure the `cfg/config.yaml` file with necessary values.
+- [ ] Make sure missions are added inside MiR platform.
+- [ ] Make sure `gui.yaml` (chargepal_monitor_gui) is set with the required values. 
+- [ ] Make sure `config.yaml` (chargepal_bundle) is set with the required values. 
+- [ ] `./create_ldb.py` whenever the enviroinment is reset to the base position ( robot and carts in their respective bases).
 - [ ] Check if the `.py` and `.pyi` files are created inside `/chargepal_client/src/chargepal_client`. If not, inside `/chargepal_client/src/chargepal_client` run `python -m grpc_tools.protoc -I. --python_out=. --pyi_out=. --grpc_python_out=. communication.proto ` to create them.
 
 ## Execution
