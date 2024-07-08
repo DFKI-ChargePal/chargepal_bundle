@@ -84,14 +84,14 @@ This mysql database is present inside the server. This acts as the main database
 ## Dependencies
 - nlohmann-json3-dev : `sudo apt-get -y install nlohmann-json3-dev`
 
-| package | branch |
-| ------ | ------ |
-|   [chargepal_local_server](https://git.ni.dfki.de/chargepal/system-integration/server-packages/chargepal_local_server)      |   main     |
-|[chargepal_actions](https://git.ni.dfki.de/chargepal/system-integration/robot-packages/chargepal_actions)    |   main     |
-|    [chargepal_behaviour_tree](https://git.ni.dfki.de/chargepal/system-integration/robot-packages/chargepal_behaviour_tree)    |    main    |
-|    [chargepal_bundle](https://git.ni.dfki.de/chargepal/system-integration/robot-packages/chargepal_bundle)    |    main    |
-|    [chargepal_services](https://git.ni.dfki.de/chargepal/system-integration/robot-packages/chargepal_services)    |    main    |
-| [chargepal_map](https://git.ni.dfki.de/chargepal/manipulation/chargepal_map/-/tree/feat/start_state?ref_type=heads) | feat/start_state|
+| package | branch |Description|
+| ------ | ------ |------ |
+|   [chargepal_local_server](https://git.ni.dfki.de/chargepal/system-integration/server-packages/chargepal_local_server)      |   main     |Handles the planning and interation within the server. This package should be running inside the server.|
+|[chargepal_actions](https://git.ni.dfki.de/chargepal/system-integration/robot-packages/chargepal_actions)    |   main     | Contains all the ros action messages and its definitions. This package should be running inside the robot.|
+|    [chargepal_behaviour_tree](https://git.ni.dfki.de/chargepal/system-integration/robot-packages/chargepal_behaviour_tree)    |    main    | Handles the job execution. This package should be running inside the robot.|
+|    [chargepal_services](https://git.ni.dfki.de/chargepal/system-integration/robot-packages/chargepal_services)    |    main    |Contains all the ros service messages and its definitions. This package should be running inside the robot.|
+| [chargepal_client](https://git.ni.dfki.de/chargepal/system-integration/robot-packages/chargepal_client) | main| Handles the communication between the robot and the server.gRPC definitions are found here. This package should be running inside the robot.|
+| [chargepal_map](https://git.ni.dfki.de/chargepal/manipulation/chargepal_map/-/tree/feat/start_state?ref_type=heads) | feat/start_state| Handles the plugin and plugout tasks. This package should be running inside the robot.|
 
 - Ensure the `chargepal_local_server` is placed outside the `chargepal_ws`
 
