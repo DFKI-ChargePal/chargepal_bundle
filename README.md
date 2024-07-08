@@ -1,17 +1,24 @@
 <details><summary>CHARGEPAL OVERALL ARCHITECTURE</summary>
 
-Imagine a parking lot where we have a ChargePal server, also called the local server, that manages a set of robots and battery carts. First, we create a map of the ChargePal operational space. To avoid directly interacting with the cars, we use Adapter Stations (ADS) and mark their positions.
+Imagine a parking lot where we have a ChargePal server (server /local server), that manages a set of robots and battery carts. The system allows multiple robots and battery carts to communicate with the server, making them act as separate clients. 
 
-After determining the number of robots and battery carts to be used, we mark the positions of the Robot Base Stations (RBS), Battery Waiting Stations (BWS), and Battery Charging Stations (BCS). Each robot and battery cart is assigned to their respective stations (RBS and BWS). The number of robots, battery carts, RBS, BWS, BCS, and ADS is manually set on the server as environment information. The map with all station positions is then provided to all the robots. 
+First, we create a map of the ChargePal operational space. To avoid directly interacting with the cars, we use Adapter Stations (ADS) and mark their positions. After determining the number of robots and battery carts to be used, we mark the positions of the Robot Base Stations (RBS), Battery Waiting Stations (BWS), and Battery Charging Stations (BCS). Each robot and battery cart is assigned to their respective stations (RBS and BWS). The number of robots, battery carts, RBS, BWS, BCS, and ADS is manually set on the server as environment information. The map with all station positions is then provided to all the robots. 
 
-The system allows multiple robots and battery carts to communicate with the server, making them act as separate clients. 
+As a summary the environment contains the following positions marked on the map.
+| Station  | Description  |Naming Format|
+| ------ | ------ |------ |
+|    ADS : Adapter Station     | The station where the driver connects their car to and leaves. The robot interacts with the adapter station to charge the vehicle.|`ADS_"stationNumber"` and `ADS_ "stationNumber"_pick` (pickup position when cart is placed in the `ADS_"stationNumber"` position) |
+|    BCS: Battery Charging Station     |    Station where the battery cart gets recharged.     |`BCS_"stationNumber"` and `BCS_"stationNumber"_pick`(pickup position when cart is placed in the `BCS_"stationNumber"` position) |
+|BWS: Battery Waiting Station |Station where battery carts are placed if all BCSs are occupied.|`BWS_"stationNumber"` and `BWS _"stationNumber"_pick` (pickup position when cart is placed in the `BWS_"stationNumber"`position) |
+|RBS: Robot Base Station |Station where robot gets recharged |`RBS_"stationNumber"` |
 
-ChargePal includes the following components: 
+ChargePal system includes the following components: 
 
 - Robot 
 - Battery/Cart 
 - Local Server 
 - Android/iOS App
+
 The image below shows a high-level architecture of the various ChargePal components
 
 ![Dependencies](images/system_architecture.png)
