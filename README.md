@@ -1,4 +1,84 @@
-# chargepal_bundle
+<details><summary>CHARGEPAL OVERALL ARCHITECTURE</summary>
+
+Imagine a parking lot where we have a ChargePal server, also called the local server, that manages a set of robots and battery carts. First, we create a map of the ChargePal operational space. To avoid directly interacting with the cars, we use Adapter Stations (ADS) and mark their positions.
+
+After determining the number of robots and battery carts to be used, we mark the positions of the Robot Base Stations (RBS), Battery Waiting Stations (BWS), and Battery Charging Stations (BCS). Each robot and battery cart is assigned to their respective stations (RBS and BWS). The number of robots, battery carts, RBS, BWS, BCS, and ADS is manually set on the server as environment information. The map with all station positions is then provided to all the robots. 
+
+The system allows multiple robots and battery carts to communicate with the server, making them act as separate clients. 
+
+ChargePal includes the following components: 
+
+- Robot 
+- Battery/Cart 
+- Local Server 
+- Android/iOS App
+The image below shows a high-level architecture of the various ChargePal components
+
+![Dependencies](images/system_architecture.png)
+ 
+The internal components inside the robot and battery are described below. 
+
+- **Chargepal Actions**  
+
+This module defines the ROS actions that can be performed by the robot and encapsulates its server. These actions involve interactions with other components or executing specific robot related tasks.  
+
+ 
+
+- **Chargepal Services**  
+
+This module defines the ROS services that can be performed by the robot and encapsulates its server. These services could include API endpoints or utilities that support the core functionalities of the robot.  
+
+ 
+
+- **Chargepal Client**  
+
+This represents the gRPC client-side interface present in the robot that interacts with the server.  
+
+ 
+
+- **Chargepal Behaviour Tree**  
+
+This component implements a behavior tree, which is a model used to control the decision-making process within the robot. It helps in managing complex behaviors by breaking them down into simpler, reusable components.  
+
+ 
+
+- **Chargepal Manipulation**  
+
+This module handles the manipulation tasks within the robot. 
+
+ 
+
+- **RDB (Robot Database)** 
+
+This represents a sqlite3 database present inside the robot. It is a replica of the LDB (Local Database) on the server. The RDB is updated at 1Hz with the values from LDB. 
+
+ 
+
+- **RDBC (Robot Database Copy)**  
+
+This is another sqlite3 database present inside the robot, specifically tailored and dedicated to storing data relevant to the robot and its ongoing operations. 
+
+ 
+
+- **Planner**  
+
+The planner module is responsible for planning jobs for the robots. The planner is present inside the server. It interacts with the databases present inside the server to know the latest state of the environment. 
+
+ 
+
+- **PDB (Planning Database)**  
+
+This sqlite3 database supports the planner module by storing data related to planning tasks. It includes tables for schedules, resources, constraints, and other planning-related information.  
+
+- **LDB (Local Database)**  
+This sqlite3 database is present inside the server and holds information on the current state of all the robots and carts, the environment representation and orders. Information from every RDBC from a robot is pushed to LDB when robot performs an action. 
+
+
+- **CDB (Chargepal Database)**  
+This mysql database is present inside the server. This acts as the main database to which the battery and user app communicates to.
+</details>
+
+## chargepal_bundle
 `chargepal_bundle` package is the root package that loads config parameters and starts all necessary nodes for the robot.  
 
 ## Dependencies
@@ -6,11 +86,10 @@
 
 | package | branch |
 | ------ | ------ |
-|   [chargepal_local_server](https://git.ni.dfki.de/chargepal/system-integration/server-packages/chargepal_local_server/-/tree/hannover_gui?ref_type=heads)      |   hannover_gui     |
-|  [chargepal_monitor_gui](https://git.ni.dfki.de/chargepal/system-integration/server-packages/chargepal_monitor_gui/-/tree/hannover_gui?ref_type=heads)      |   hannover_gui     |
-|     [chargepal_actions](https://git.ni.dfki.de/chargepal/system-integration/robot-packages/chargepal_actions)    |   hannover_gui     |
-|    [chargepal_behaviour_tree](https://git.ni.dfki.de/chargepal/system-integration/robot-packages/chargepal_behaviour_tree)    |    hannover_gui    |
-|    [chargepal_bundle](https://git.ni.dfki.de/chargepal/system-integration/robot-packages/chargepal_bundle)    |    hannover_gui    |
+|   [chargepal_local_server](https://git.ni.dfki.de/chargepal/system-integration/server-packages/chargepal_local_server)      |   main     |
+|[chargepal_actions](https://git.ni.dfki.de/chargepal/system-integration/robot-packages/chargepal_actions)    |   main     |
+|    [chargepal_behaviour_tree](https://git.ni.dfki.de/chargepal/system-integration/robot-packages/chargepal_behaviour_tree)    |    main    |
+|    [chargepal_bundle](https://git.ni.dfki.de/chargepal/system-integration/robot-packages/chargepal_bundle)    |    main    |
 |    [chargepal_services](https://git.ni.dfki.de/chargepal/system-integration/robot-packages/chargepal_services)    |    main    |
 | [chargepal_map](https://git.ni.dfki.de/chargepal/manipulation/chargepal_map/-/tree/feat/start_state?ref_type=heads) | feat/start_state|
 
