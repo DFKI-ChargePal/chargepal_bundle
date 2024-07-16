@@ -1,4 +1,4 @@
-server_address: "localhost:50059"
+server_address: "192.168.185.25:50059"
 mir_address: "192.168.12.20"
 robot_name: "ChargePal1"
 robot_id: 'ER-FLEX-00040'
