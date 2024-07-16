@@ -93,7 +93,6 @@ This mysql database is present inside the server. This acts as the main database
 
 | package | branch |Description|
 | ------ | ------ |------ |
-|   [chargepal_local_server](https://git.ni.dfki.de/chargepal/system-integration/server-packages/chargepal_local_server)      |   main     |Handles the planning and interation within the server. This package should be running inside the server.|
 |[chargepal_actions](https://git.ni.dfki.de/chargepal/system-integration/robot-packages/chargepal_actions)    |   main     | Contains all the ros action messages and its definitions. This package should be running inside the robot.|
 |    [chargepal_behaviour_tree](https://git.ni.dfki.de/chargepal/system-integration/robot-packages/chargepal_behaviour_tree)    |    main    | Handles the job execution. This package should be running inside the robot.|
 |    [chargepal_services](https://git.ni.dfki.de/chargepal/system-integration/robot-packages/chargepal_services)    |    main    |Contains all the ros service messages and its definitions. This package should be running inside the robot.|
