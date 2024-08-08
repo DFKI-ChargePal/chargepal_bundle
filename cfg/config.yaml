@@ -4,6 +4,7 @@ robot_name: "ChargePal1"
 robot_id: 'ER-FLEX-00040'
 sim_flag: True
 recovery_enabled: False
+battery_communication: False
 server_timeout: 600 #seconds (10 minutes)
 rdb_path: "chargepal_bundle/db/rdb.db"
 rdbc_path: "chargepal_bundle/db/rdb_copy.db"
