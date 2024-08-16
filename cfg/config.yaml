@@ -9,3 +9,8 @@ server_timeout: 600 #seconds (10 minutes)
 rdb_path: "chargepal_bundle/db/rdb.db"
 rdbc_path: "chargepal_bundle/db/rdb_copy.db"
 log_file_path: "chargepal_bundle/logs/chargepal_logs.txt"
+arrive_at_station_enabled: True
+pickup_cart_enabled: True
+drop_cart_enabled: True
+plugin_enabled: True
+plugout_enabled: True
