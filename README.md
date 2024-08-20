@@ -93,19 +93,19 @@ This mysql database is present inside the server. This acts as the main database
 
 | package | branch |Description|
 | ------ | ------ |------ |
-|[chargepal_actions](https://git.ni.dfki.de/chargepal/system-integration/robot-packages/chargepal_actions)    |   main     | Contains all the ros action messages and its definitions. This package should be running inside the robot.|
+|[chargepal_actions](https://git.ni.dfki.de/chargepal/system-integration/robot-packages/chargepal_actions)    |   main     | Contains all the ROS action messages and its definitions. This package should be running inside the robot.|
 |    [chargepal_behaviour_tree](https://git.ni.dfki.de/chargepal/system-integration/robot-packages/chargepal_behaviour_tree)    |    main    | Handles the job execution. This package should be running inside the robot.|
-|    [chargepal_services](https://git.ni.dfki.de/chargepal/system-integration/robot-packages/chargepal_services)    |    main    |Contains all the ros service messages and its definitions. This package should be running inside the robot.|
-| [chargepal_client](https://git.ni.dfki.de/chargepal/system-integration/robot-packages/chargepal_client) | main| Handles the communication between the robot and the server.gRPC definitions are found here. This package should be running inside the robot.|
+|    [chargepal_services](https://git.ni.dfki.de/chargepal/system-integration/robot-packages/chargepal_services)    |    main    |Contains all the ROS service messages and its definitions. This package should be running inside the robot.|
+| [chargepal_client](https://git.ni.dfki.de/chargepal/system-integration/robot-packages/chargepal_client) | main| Handles the communication between the robot and the server. gRPC definitions are found here. This package should be running inside the robot.|
 | [chargepal_map](https://git.ni.dfki.de/chargepal/manipulation/chargepal_map/-/tree/feat/start_state?ref_type=heads) | feat/start_state| Handles the plugin and plugout tasks. This package should be running inside the robot.|
 
 - Ensure the `chargepal_local_server` is placed outside the `chargepal_ws`
 
 ## Installation
 - Create a `catkin_ws` folder and a `src` folder inside it.
-- Clone the following packages `chargepal_bundle`,`chargepal_behaviour_tree`,`chargepal_client`,`chargepal_actions`,`chargepal_services`inside a `catkin_ws/src`.
+- Clone the following packages: `chargepal_bundle`,`chargepal_behaviour_tree`,`chargepal_client`,`chargepal_actions`,`chargepal_services`inside a `catkin_ws/src`.
 - Add submodules by running `git submodule init` and `git submodule update`. 
-- Inside `catkin_ws/src` run `ln -s chargepal_behaviour_tree/BehaviorTree.CPP`.This creates a softlink to the BehaviorTree.CPP that is present inside the `chargepal_behaviour_tree` package, to outside the package.
+- Inside `catkin_ws/src` run `ln -s chargepal_behaviour_tree/BehaviorTree.CPP`. This creates a softlink to the BehaviorTree.CPP, that is present inside the `chargepal_behaviour_tree` package, to outside the package.
 - Run `catkin_make` inside `/catkin_ws`.
  
 ## Checklist before starting the nodes
