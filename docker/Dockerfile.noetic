@@ -1,0 +1,126 @@
+ARG ROS_DISTRO=noetic
+
+FROM ros:${ROS_DISTRO}-robot 
+ARG ROS_PACKAGE_NAME=chargepal_bundle
+ARG TIMEZONE=Europe/berlin
+ARG CI_DEPLOY_USER
+ARG CI_DEPLOY_PASSWORD
+
+# Set timezone
+ENV TZ=${TIMEZONE}
+RUN ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime && echo ${TZ} > /etc/timezone
+
+RUN apt-get update && apt-get -y --no-install-recommends install \
+    apt-utils \
+    software-properties-common \
+    build-essential \
+    cmake \
+    wget \
+    git \
+    nano \
+    python3-pip \
+    python3-grpcio \
+    ros-noetic-rospy \
+    ros-noetic-roscpp \
+    ros-noetic-std-msgs \
+    ros-noetic-geometry-msgs \
+    nlohmann-json3-dev\
+    libyaml-cpp-dev\
+    libzmq3-dev\
+    supervisor \
+    && apt-get -y autoremove \
+    && apt-get clean
+
+RUN echo "deb http://download.opensuse.org/repositories/network:/messaging:/zeromq:/release-stable/Debian_9.0/ ./" >> /etc/apt/sources.list && \
+ wget https://download.opensuse.org/repositories/network:/messaging:/zeromq:/release-stable/Debian_9.0/Release.key -O- | sudo apt-key add && \
+ apt-get install libzmq3-dev -y
+ 
+ENV HOME /root
+ENV DEBIAN_FRONTEND=noninteractive
+
+# save CI_DEPLOY_USER and CI_DEPLOY_PASSWORD to git credential store
+# THis will allow cloning without requesting a password.
+# TODO: Delete the credentials after build. (Security bridge)
+RUN git config --list 
+RUN git config --global credential.helper store
+RUN echo  https://${CI_DEPLOY_USER}:${CI_DEPLOY_PASSWORD}@git.ni.dfki.de >> ~/.git-credentials
+
+
+COPY requirements.txt ${HOME}
+RUN python3 -m pip install --upgrade pip
+RUN python3 -m pip install --no-cache-dir -r ${HOME}/requirements.txt
+
+
+# Setup catkin workspace
+ENV CATKIN_WS ${HOME}/catkin_ws
+COPY . ${CATKIN_WS}/src/${ROS_PACKAGE_NAME}
+
+# =====Add chargepal_client=====
+WORKDIR  ${CATKIN_WS}/src
+RUN git clone https://${CI_DEPLOY_USER}:${CI_DEPLOY_PASSWORD}@git.ni.dfki.de/chargepal/system-integration/robot-packages/chargepal_client.git
+# Compile proto messages
+WORKDIR ${CATKIN_WS}/src/chargepal_client/src/chargepal_client
+ENV PYTHONPATH="${PYTHONPATH}:${CATKIN_WS}/src/chargepal_client/src/chargepal_client"
+RUN python3 -m grpc_tools.protoc -I. --python_out=. --pyi_out=. --grpc_python_out=. communication.proto
+
+# =====Add chargepal_services=====
+WORKDIR  ${CATKIN_WS}/src
+RUN git clone https://${CI_DEPLOY_USER}:${CI_DEPLOY_PASSWORD}@git.ni.dfki.de/chargepal/system-integration/robot-packages/chargepal_services.git 
+
+
+# =====Add chargepal_actions=====
+WORKDIR  ${CATKIN_WS}/src
+RUN git clone https://${CI_DEPLOY_USER}:${CI_DEPLOY_PASSWORD}@git.ni.dfki.de/chargepal/system-integration/robot-packages/chargepal_actions.git
+
+# clone er_public_msg as dependency for chargepal_actions
+RUN mkdir ${CATKIN_WS}/src/er_public_msgs && git clone https://github.com/enabled-robotics/er_public_msgs.git ${CATKIN_WS}/src/er_public_msgs 
+
+# =====Add chargepal_behaviour=====
+RUN git clone https://${CI_DEPLOY_USER}:${CI_DEPLOY_PASSWORD}@git.ni.dfki.de/chargepal/system-integration/robot-packages/chargepal_behaviour_tree.git
+WORKDIR  ${CATKIN_WS}/src/chargepal_behaviour_tree
+RUN git submodule init  && git submodule update
+WORKDIR  ${CATKIN_WS}/src
+RUN ln -s ${CATKIN_WS}/src/chargepal_behaviour_tree/BehaviorTree.CPP 
+
+# =====Add chargepal_map=====
+RUN git clone https://${CI_DEPLOY_USER}:${CI_DEPLOY_PASSWORD}@git.ni.dfki.de/chargepal/manipulation/chargepal_map.git
+
+RUN git clone https://${CI_DEPLOY_USER}:${CI_DEPLOY_PASSWORD}@git.ni.dfki.de/chargepal/manipulation/chargepal_configuration.git config
+WORKDIR  ${CATKIN_WS}/src/chargepal_map/config
+
+# CHeckout default branch
+RUN git checkout ${CONFIG_BRANCH}
+
+# install ur pilot package
+WORKDIR  ${CATKIN_WS}/src/chargepal_map/
+RUN pip install -e .
+RUN git clone https://${CI_DEPLOY_USER}:${CI_DEPLOY_PASSWORD}@git.ni.dfki.de/chargepal/manipulation/chargepal_ur_pilot.git ur_pilot
+WORKDIR  ${CATKIN_WS}/src/chargepal_map/ur_pilot
+RUN echo $(sed -i -e 's/:/\//g' -e 's/git@/https:\/\//g'  pyproject.toml) && sed -i   '/chargepal_cvpd/ s/branch="main"/branch="docker"/g' pyproject.toml
+RUN pip install -e .  --ignore-installed PyYAML
+# RUN pip install -e . pysoem==1.1.6  --ignore-installed PyYAML
+
+# Init workspace
+RUN echo  ******************** ${CATKIN_WS}/src/${ROS_PACKAGE_NAME}
+RUN ${CATKIN_WS}/src/${ROS_PACKAGE_NAME}/docker/init_workspace.sh
+
+
+WORKDIR ${CATKIN_WS}
+
+# Add updated ros entrypoint
+RUN cp ${CATKIN_WS}/src/${ROS_PACKAGE_NAME}/docker/ros_entrypoint.sh /ros_entrypoint.sh
+
+# Add supervisord configuration to run and monitort multiple process in the container
+RUN mkdir -p /var/log/supervisor && mkdir -p /etc/supervisor/conf.d/
+RUN cp ${CATKIN_WS}/src/${ROS_PACKAGE_NAME}/docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+RUN echo "source ${CATKIN_WS}/devel/setup.bash" >> ${HOME}/.bashrc
+ENV DISPLAY :0
+ENV NVIDIA_VISIBLE_DEVICES all
+ENV NVIDIA_DRIVER_CAPABILITIES graphics,utility,compute
+ENV runtime=nvidia
+ENV TERM=xterm
+
+# Some QT-Apps don't show controls without this
+ENV QT_X11_NO_MITSHM 1
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]  

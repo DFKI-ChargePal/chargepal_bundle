@@ -1,0 +1,61 @@
+version: '2'
+
+networks:
+  chargepal_docker_network:
+    driver: bridge
+    name: chargepal_docker_network
+
+services:
+  ros-master:
+    image: ros:noetic-robot
+    command: stdbuf -o L roscore
+    tty: true
+    stdin_open: true
+    ports:
+      - 11311:11311
+    networks:
+      chargepal_docker_network:
+        aliases:
+          - ros-master
+    restart: always
+    # environment:
+      # - ROS_MASTER_URI=http://<external-ros-master>:11311
+      #- ROS_HOSTNAME=ER-FLEX-00040
+  
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      #- shared_data:/root/catkin_ws_v3
+
+  chargepal_bundle:
+    image:   git.ni.dfki.de:5050/chargepal/system-integration/robot-packages/chargepal_bundle:feature-add-docker
+    command:  roslaunch chargepal_bundle startup_all.launch
+    tty: true
+    stdin_open: true
+    networks:
+      - chargepal_docker_network
+    environment: # Modify the values in the local .env file to set this  variables
+      - ROS_MASTER_URI=http://ros-master:11311
+      - LOAD_FROM_ENV=${LOAD_FROM_ENV} 
+      - SERVER_ADDRESS=${SERVER_ADDRESS}  
+      - MIR_ADDRESS=${MIR_ADDRESS}  
+      - ROBOT_NAME=${ROBOT_NAME}  
+      - ROBOT_ID=${ROBOT_ID}  
+      - SIM_FLAG=${SIM_FLAG}  
+      - RECOVER_ENABLED=${RECOVER_ENABLED}  
+      - SERVER_TIMEOUT=${SERVER_TIMEOUT}  
+      - RDB_PATH=${RDB_PATH}  
+      - RDBC_PATH=${RDBC_PATH}  
+      - LOG_FILE_PATH=${LOG_FILE_PATH}  
+      - CHARGEPAL_MAP_CONFIG_BRANCH=${CONFIG_BRANCH} 
+    depends_on:
+      - ros-master
+    restart: always
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - shared_data:/root/catkin_ws_v2
+
+volumes:
+  shared_data:
+
