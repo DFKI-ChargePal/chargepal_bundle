@@ -120,11 +120,11 @@ This mysql database is present inside the server. This acts as the main database
 
 ## Execution
 
-**Step 1:** Set the configuration file
+**Step 1:** Set the [configuration file](./cfg/config.yaml)
 
 | Parameter | Example |Notes |
 | ------ | ------ |------ |
-|  server_address      |   "localhost:50059"     |Make sure to set the ip/hostname and port number of [chargepal_local_server](https://git.ni.dfki.de/chargepal/system-integration/server-packages/chargepal_local_server/-/blame/main/src/chargepal_local_server/server.py?ref_type=heads#L118)|
+|  server_address      |   "localhost:50059"     |Make sure to set the ip/hostname and port number of [chargepal_local_server](https://git.ni.dfki.de/chargepal/system-integration/server-packages/chargepal_local_server)|
 |     mir_address   | "192.168.12.20"       | MiR adress can be found in the [wiki](https://git.ni.dfki.de/chargepal/chargepal_wiki/-/wikis/Documentation/onboard-devices-and-network)|
 |     robot_name   | 'ChargePal1'       |The name of the robot. Make sure to follow the same naming convention|
 |     robot_id   | 'ER-FLEX-00040'     |The robot id mentioned on each robot|
