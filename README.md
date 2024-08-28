@@ -116,7 +116,7 @@ This mysql database is present inside the server. This acts as the main database
 - [ ] Make sure missions are added inside MiR platform.
 - [ ] Make sure `config.yaml` (chargepal_bundle) is set with the required values. 
 - [ ] `./create_ldb.py` whenever the enviroinment is reset to the base position ( robot and carts in their respective bases).
-- [ ] Check if the `.py` and `.pyi` files are created inside `/chargepal_client/src/chargepal_client`. If not, inside `/chargepal_client/src/chargepal_client` run `python -m grpc_tools.protoc -I. --python_out=. --pyi_out=. --grpc_python_out=. communication.proto ` to create them.
+- [ ] Check if the `.py` and `.pyi` files are created inside `/chargepal_client/src/chargepal_client`. If not, inside `/chargepal_client/src/chargepal_client` run `./generate-proto` to create them.
 
 ## Execution
 
