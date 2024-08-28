@@ -135,4 +135,4 @@ This mysql database is present inside the server. This acts as the main database
 
 **Step 2:** `catkin_make` and `source devel/setup.bash` the workspace.
 
-**Step 3:** Run `roslaunch chargepal_bundle startup.launch` or `roslaunch chargepal_bundle startup_sim.launch` for simulation without `chargepal_map`. Wait for a few seconds for it to finish starting all the launch files. Then run `rosrun chargepal_behaviour_tree behaviour_tree`. If you are running the simulation, run `./create_ldb_orders.py` in `chargepal_local_server/src/chargepal_local_server`.
+**Step 3:** Run `roslaunch chargepal_bundle startup.launch` or `roslaunch chargepal_bundle startup_sim.launch` for simulation without `chargepal_map`. Wait for a few seconds for it to finish starting all the launch files. Then run `rosrun chargepal_behaviour_tree behaviour_tree`. If you are running the simulation, run `./create_ldb_orders.py` in `chargepal_local_server/src/chargepal_local_server` to start the execution (`create_ldb_orders.py` adds a job entry, which then triggers the execution).
