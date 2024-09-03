@@ -1,9 +1,10 @@
 <launch>
     <arg name="node_start_delay" default="5.0" />  
+	<arg name="config_file_map" default="$(find chargepal_map)/config/config.yaml"/>
     <node pkg="chargepal_bundle" type="chargepal_load_params.py" name="chargepal_load_params" output="screen"/>
     <node pkg="chargepal_client" type="client.py" name="chargepal_client" launch-prefix="bash -c 'sleep $(arg node_start_delay); $0 $@' " output="screen"/>
     <node pkg="chargepal_services" type="chargepal_service.py" name="chargepal_services" launch-prefix="bash -c 'sleep $(arg node_start_delay); $0 $@' " output="screen" />
 	<node pkg="chargepal_actions" type="cp_action_server.py" name="chargepal_action_server" launch-prefix="bash -c 'sleep $(arg node_start_delay); $0 $@' "  output="screen"/>
-    <node pkg="chargepal_map" type="action_server.py" name="chargepal_map" launch-prefix="bash -c 'sleep $(arg node_start_delay); $0 $@' "  output="screen"/>
+    <node pkg="chargepal_map" type="start_maps.py" name="chargepal_map" launch-prefix="bash -c 'sleep $(arg node_start_delay); $0 $@' " args="$(arg config_file_map)" output="screen" respawn="true"/>
     <node pkg="chargepal_behaviour_tree" type="chargepal_behaviour_tree" name="chargepal_behaviour_tree" launch-prefix="bash -c 'sleep $(arg node_start_delay); $0 $@' "  output="screen"/>
 </launch>
