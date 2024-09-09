@@ -11,30 +11,33 @@ ENV TZ=${TIMEZONE}
 RUN ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime && echo ${TZ} > /etc/timezone
 
 RUN apt-get update && apt-get -y --no-install-recommends install \
-    apt-utils \
-    software-properties-common \
-    build-essential \
-    cmake \
-    wget \
-    git \
-    nano \
-    python3-pip \
-    python3-grpcio \
-    ros-noetic-rospy \
-    ros-noetic-roscpp \
-    ros-noetic-std-msgs \
-    ros-noetic-geometry-msgs \
-    nlohmann-json3-dev\
-    libyaml-cpp-dev\
-    libzmq3-dev\
-    supervisor \
-    && apt-get -y autoremove \
-    && apt-get clean
+apt-utils \
+software-properties-common \
+build-essential \
+cmake \
+wget \
+git \
+nano \
+python3-pip \
+python3-grpcio \
+ros-noetic-rospy \
+ros-noetic-roscpp \
+ros-noetic-std-msgs \
+ros-noetic-geometry-msgs \
+libxext6  \
+ffmpeg \
+supervisor \
+nlohmann-json3-dev \
+libzmq3-dev \
+libyaml-cpp-dev \
+libsm6 \
+&& apt-get -y autoremove \
+&& apt-get clean
 
 RUN echo "deb http://download.opensuse.org/repositories/network:/messaging:/zeromq:/release-stable/Debian_9.0/ ./" >> /etc/apt/sources.list && \
- wget https://download.opensuse.org/repositories/network:/messaging:/zeromq:/release-stable/Debian_9.0/Release.key -O- | sudo apt-key add && \
- apt-get install libzmq3-dev -y
- 
+wget https://download.opensuse.org/repositories/network:/messaging:/zeromq:/release-stable/Debian_9.0/Release.key -O- | sudo apt-key add && \
+apt-get install libzmq3-dev -y
+
 ENV HOME /root
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -83,20 +86,28 @@ WORKDIR  ${CATKIN_WS}/src
 RUN ln -s ${CATKIN_WS}/src/chargepal_behaviour_tree/BehaviorTree.CPP 
 
 # =====Add chargepal_map=====
+ENV CONFIG_BRANCH er_flex_00041/map/twist_lock_plug
 RUN git clone https://${CI_DEPLOY_USER}:${CI_DEPLOY_PASSWORD}@git.ni.dfki.de/chargepal/manipulation/chargepal_map.git
+WORKDIR  ${CATKIN_WS}/src/chargepal_map/
 
 RUN git clone https://${CI_DEPLOY_USER}:${CI_DEPLOY_PASSWORD}@git.ni.dfki.de/chargepal/manipulation/chargepal_configuration.git config
 WORKDIR  ${CATKIN_WS}/src/chargepal_map/config
 
-# CHeckout default branch
+#Checkout default branch
 RUN git checkout ${CONFIG_BRANCH}
 
-# install ur pilot package
+#Install chargepal_map dependencies
 WORKDIR  ${CATKIN_WS}/src/chargepal_map/
 RUN pip install -e .
-RUN git clone https://${CI_DEPLOY_USER}:${CI_DEPLOY_PASSWORD}@git.ni.dfki.de/chargepal/manipulation/chargepal_ur_pilot.git ur_pilot
+
+
+# install ur pilot package
+RUN git clone -b docker https://${CI_DEPLOY_USER}:${CI_DEPLOY_PASSWORD}@git.ni.dfki.de/chargepal/manipulation/chargepal_ur_pilot.git ur_pilot
 WORKDIR  ${CATKIN_WS}/src/chargepal_map/ur_pilot
-RUN echo $(sed -i -e 's/:/\//g' -e 's/git@/https:\/\//g'  pyproject.toml) && sed -i   '/chargepal_cvpd/ s/branch="main"/branch="docker"/g' pyproject.toml
+
+# RUN pip install ur-rtde
+# Use special docker branch in UR pilot
+#RUN echo $(sed -i -e 's/:/\//g' -e 's/git@/https:\/\//g'  pyproject.toml) && sed -i   '/chargepal_cvpd/ s/branch="main"/branch="docker"/g' pyproject.toml
 RUN pip install -e .  --ignore-installed PyYAML
 # RUN pip install -e . pysoem==1.1.6  --ignore-installed PyYAML
 
@@ -104,7 +115,7 @@ RUN pip install -e .  --ignore-installed PyYAML
 RUN echo  ******************** ${CATKIN_WS}/src/${ROS_PACKAGE_NAME}
 RUN ${CATKIN_WS}/src/${ROS_PACKAGE_NAME}/docker/init_workspace.sh
 
-
+# Default working directory
 WORKDIR ${CATKIN_WS}
 
 # Add updated ros entrypoint

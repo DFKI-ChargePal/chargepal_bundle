@@ -18,17 +18,12 @@ services:
         aliases:
           - ros-master
     restart: always
-    # environment:
-      # - ROS_MASTER_URI=http://<external-ros-master>:11311
-      #- ROS_HOSTNAME=ER-FLEX-00040
-  
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
-      #- shared_data:/root/catkin_ws_v3
 
   chargepal_bundle:
-    image:   git.ni.dfki.de:5050/chargepal/system-integration/robot-packages/chargepal_bundle:feature-add-docker
-    command:  roslaunch chargepal_bundle startup_all.launch
+    image:   git.ni.dfki.de:5050/chargepal/system-integration/robot-packages/chargepal_bundle/main:latest
+    command:  roslaunch chargepal_bundle startup.launch
     tty: true
     stdin_open: true
     networks:
@@ -54,8 +49,5 @@ services:
       - "host.docker.internal:host-gateway"
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
-      - shared_data:/root/catkin_ws_v2
 
-volumes:
-  shared_data:
 

@@ -18,16 +18,11 @@ services:
         aliases:
           - ros-master
     restart: always
-    # environment:
-      # - ROS_MASTER_URI=http://<external-ros-master>:11311
-      #- ROS_HOSTNAME=ER-FLEX-00040
-  
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
-      #- shared_data:/root/catkin_ws_v3
 
   chargepal_bundle:
-    image:   git.ni.dfki.de:5050/chargepal/system-integration/robot-packages/chargepal_bundle:feature-add-docker
+    image:   git.ni.dfki.de:5050/chargepal/system-integration/robot-packages/chargepal_bundle/main:latest
     command:  roslaunch chargepal_bundle startup.launch
     tty: true
     stdin_open: true
@@ -56,50 +51,4 @@ services:
       - /tmp/.X11-unix:/tmp/.X11-unix
       - shared_data:/root/catkin_ws_v2
 
-  chargepal_dope:
-    image: git.ni.dfki.de:5050/chargepal/chargepal_dope:main
-    command: roslaunch chargepal_dope realsense_dope.launch use_docker:=false
-    #command: while true; do echo "Your message here"; sleep 10; done
-    tty: true
-    stdin_open: true
-    networks:
-      - chargepal_docker_network
-    environment:
-      - ROS_MASTER_URI=http://ros-master:11311
-      - NVIDIA_VISIBLE_DEVICES=all
-      - runtime=nvidia
-      - net=host
-      - DISPLAY=$DISPLAY
-      - gpus=all
-    depends_on:
-      - ros-master
-    restart: always
-    volumes:
-      - /tmp/.X11-unix:/tmp/.X11-unix
-      - shared_data:/root/catkin_ws_v2
-
-  chargepal_map:
-    image:   git.ni.dfki.de:5050/chargepal/manipulation/chargepal_map:feature-add-docker
-    command:  roslaunch chargepal_map action_server.launch
-    tty: true
-    stdin_open: true
-    networks:
-      - chargepal_docker_network
-    environment:
-      #- ROS_HOSTNAME=chargepal_map
-      - CHARGEPAL_MAP_CONFIG_BRANCH=er_flex_00041/map/twist_lock_plug
-      - ROS_MASTER_URI=http://ros-master:11311
-    depends_on:
-      - ros-master
-    restart: always
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-    volumes:
-      - /tmp/.X11-unix:/tmp/.X11-unix
-      - shared_data:/root/catkin_ws_v2
-
-
-
-volumes:
-  shared_data:
 
