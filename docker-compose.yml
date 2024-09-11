@@ -49,6 +49,5 @@ services:
       - "host.docker.internal:host-gateway"
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
-      - shared_data:/root/catkin_ws_v2
 
 
