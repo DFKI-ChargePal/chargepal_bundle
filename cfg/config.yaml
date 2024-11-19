@@ -1,9 +1,15 @@
 server_address: "192.168.185.25:50059"
 mir_address: "192.168.12.20"
+mir_user_name: "user"  # Insert your MiR platform user name here
+mir_user_password: "passwd"  # Insert your password here
 robot_name: "ChargePal1"
-robot_id: 'ER-FLEX-00040'
+robot_id: "ER-FLEX-00040"
 sim_flag: True
-recovery_enabled: False
+recovery_enabled: True
+recovery_email_account: "<user>@gmail.com"  # Insert account here, set to "" for disabling
+recovery_email_acc_passwd: "passwd"  # Insert password here
+recovery_email_recipients:  # Add recovery email recipients here as list
+  - "user@provider.tld"
 battery_communication: False
 server_timeout: 600 #seconds (10 minutes)
 rdb_path: "chargepal_bundle/db/rdb.db"
