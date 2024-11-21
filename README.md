@@ -5,12 +5,12 @@ Imagine a parking lot where we have a ChargePal server (server /local server), t
 First, we create a map of the ChargePal operational space. To avoid directly interacting with the cars, we use Adapter Stations (ADS) and mark their positions. After determining the number of robots and battery carts to be used, we mark the positions of the Robot Base Stations (RBS), Battery Waiting Stations (BWS), and Battery Charging Stations (BCS). Each robot and battery cart is assigned to their respective stations (RBS and BWS). The number of robots, battery carts, RBS, BWS, BCS, and ADS is manually set on the server as environment information. The map with all station positions is then provided to all the robots. 
 
 As a summary the environment contains the following positions marked on the map.
-| Station  | Description  |Naming Format|
-| ------ | ------ |------ |
-|    ADS : Adapter Station     | The station where the driver connects their car to and leaves. The robot interacts with the adapter station to charge the vehicle.|`ADS_"stationNumber"` and `ADS_ "stationNumber"_pick` (pickup position when cart is placed in the `ADS_"stationNumber"` position) |
-|    BCS: Battery Charging Station     |    Station where the battery cart gets recharged.     |`BCS_"stationNumber"` and `BCS_"stationNumber"_pick`(pickup position when cart is placed in the `BCS_"stationNumber"` position) |
-|BWS: Battery Waiting Station |Station where battery carts are placed if all BCSs are occupied.|`BWS_"stationNumber"` and `BWS _"stationNumber"_pick` (pickup position when cart is placed in the `BWS_"stationNumber"`position) |
-|RBS: Robot Base Station |Station where robot gets recharged |`RBS_"stationNumber"` |
+| Station                       | Description                                                                                                                        | Naming Format                                                                                                                     |
+| ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| ADS : Adapter Station         | The station where the driver connects their car to and leaves. The robot interacts with the adapter station to charge the vehicle. | `ADS_"stationNumber"` and `ADS_ "stationNumber"_pick` (pickup position when cart is placed in the `ADS_"stationNumber"` position) |
+| BCS: Battery Charging Station | Station where the battery cart gets recharged.                                                                                     | `BCS_"stationNumber"` and `BCS_"stationNumber"_pick`(pickup position when cart is placed in the `BCS_"stationNumber"` position)   |
+| BWS: Battery Waiting Station  | Station where battery carts are placed if all BCSs are occupied.                                                                   | `BWS_"stationNumber"` and `BWS _"stationNumber"_pick` (pickup position when cart is placed in the `BWS_"stationNumber"`position)  |
+| RBS: Robot Base Station       | Station where robot gets recharged                                                                                                 | `RBS_"stationNumber"`                                                                                                             |
 
 ChargePal system includes the following components: 
 
@@ -93,13 +93,13 @@ This mysql database is present inside the server. This acts as the main database
 - CPP-YAML: `sudo apt-get install libyaml-cpp-dev`
 - ZmQ3: `sudo apt-get install libzmq3-dev`
 
-| package | branch |Description|
-| ------ | ------ |------ |
-|[chargepal_actions](https://git.ni.dfki.de/chargepal/system-integration/robot-packages/chargepal_actions)    |   main     | Contains all the ROS action messages and its definitions. This package should be running inside the robot.|
-|    [chargepal_behaviour_tree](https://git.ni.dfki.de/chargepal/system-integration/robot-packages/chargepal_behaviour_tree)    |    main    | Handles the job execution. This package should be running inside the robot.|
-|    [chargepal_services](https://git.ni.dfki.de/chargepal/system-integration/robot-packages/chargepal_services)    |    main    |Contains all the ROS service messages and its definitions. This package should be running inside the robot.|
-| [chargepal_client](https://git.ni.dfki.de/chargepal/system-integration/robot-packages/chargepal_client) | main| Handles the communication between the robot and the server. gRPC definitions are found here. This package should be running inside the robot.|
-| [chargepal_map](https://git.ni.dfki.de/chargepal/manipulation/chargepal_map/) | feat/start_state| Handles the plugin and plugout tasks. This package should be running inside the robot.|
+| package                                                                                | branch | Description                                                                                                                                   |
+| -------------------------------------------------------------------------------------- | ------ | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| [chargepal_actions](https://github.com/DFKI-ChargePal/chargepal_actions)               | main   | Contains all the ROS action messages and its definitions. This package should be running inside the robot.                                    |
+| [chargepal_behaviour_tree](https://github.com/DFKI-ChargePal/chargepal_behaviour_tree) | main   | Handles the job execution. This package should be running inside the robot.                                                                   |
+| [chargepal_services](https://github.com/DFKI-ChargePal/chargepal_services)             | main   | Contains all the ROS service messages and its definitions. This package should be running inside the robot.                                   |
+| [chargepal_client](https://github.com/DFKI-ChargePal/chargepal_client)                 | main   | Handles the communication between the robot and the server. gRPC definitions are found here. This package should be running inside the robot. |
+| [chargepal_map](https://github.com/DFKI-ChargePal/chargepal_map)                       | main   | Handles the plugin and plugout tasks. This package should be running inside the robot.                                                        |
 
 - Ensure the `chargepal_local_server` is placed outside the `chargepal_ws`
 
@@ -122,16 +122,21 @@ This mysql database is present inside the server. This acts as the main database
 
 **Step 1:** Set the [configuration file](./cfg/config.yaml)
 
-| Parameter | Example |Notes |
-| ------ | ------ |------ |
-|  server_address      |   "localhost:50059"     |Make sure to set the ip/hostname and port number of [chargepal_local_server](https://git.ni.dfki.de/chargepal/system-integration/server-packages/chargepal_local_server)|
-|     mir_address   | "192.168.12.20"       | MiR adress can be found in the [wiki](https://git.ni.dfki.de/chargepal/chargepal_wiki/-/wikis/Documentation/onboard-devices-and-network)|
-|     robot_name   | 'ChargePal1'       |The name of the robot. Make sure to follow the same naming convention|
-|     robot_id   | 'ER-FLEX-00040'     |The robot id mentioned on each robot|
-|     sim_flag   | True      |Set this value to `True` to simulate robot actions as sleep intervals.Else, set it to `False` if you want to see the robot perform the action|
-|     recovery_enabled   | False       |Set this to `True` to have recovery actions enabled for any failed action. Else, set it to `False` to pause and ask for manual recovery|
-|     server_timeout   | 600       | Value in seconds which denote the time interval after which a technician is to be called when connection to server has failed|
-
+| Parameter                 | Example                 | Notes                                                                                                                                         |
+| ------------------------- | ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| server_address            | "localhost:50059"       | Make sure to set the ip/hostname and port number of [chargepal_local_server](https://github.com/DFKI-ChargePal/chargepal_local_server)        |
+| mir_address               | "192.168.12.20"         | IP address of the MiR on the robot network                                                                                                    |
+| mir_user_name             | "user"                  | Username for connecting to the MiR platform                                                                                                   |
+| mir_user_password         | "password"              | Password of the MiR user                                                                                                                      |
+| robot_name                | 'ChargePal1'            | The name of the robot. Make sure to follow the same naming convention                                                                         |
+| robot_id                  | 'ER-FLEX-00040'         | The robot id mentioned on each robot                                                                                                          |
+| sim_flag                  | True                    | Set this value to `True` to simulate robot actions as sleep intervals.Else, set it to `False` if you want to see the robot perform the action |
+| recovery_enabled          | False                   | Set this to `True` to have recovery actions enabled for any failed action. Else, set it to `False` to pause and ask for manual recovery       |
+| recovery_email_account    | "user@gmail.com"        | Email address for sending recovery emails                                                                                                     |
+| recovery_email_acc_passwd | "password"              | Password for the email account used for recovery emails                                                                                       |
+| recovery_email_recipients | "  - user@provider.tld" | List of recipients that should receive the recovery emails                                                                                    |
+| battery_communication     | True                    | Flag for enabling the communication with the battery                                                                                          |
+| server_timeout            | 600                     | Value in seconds which denote the time interval after which a technician is to be called when connection to server has failed                 |
 
 **Step 2:** `catkin_make` and `source devel/setup.bash` the workspace.
 
